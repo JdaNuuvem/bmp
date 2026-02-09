@@ -23,8 +23,8 @@ services:
       - POSTGRES_PASSWORD=root
     volumes:
       - db_data:/var/lib/postgresql/data
-      # Optional: Import initial database dump if exists
-      # - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      # Import initial database dump automatically
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db_data:
