@@ -1,7 +1,8 @@
 FROM php:8.2-apache
 
 # Install dependencies and extensions
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
 # Enable Apache mod_rewrite for clean URLs if needed (often used in PHP apps)
 RUN a2enmod rewrite

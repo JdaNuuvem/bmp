@@ -1,9 +1,10 @@
-CREATE DATABASE IF NOT EXISTS banco_white;
-USE banco_white;
+-- Create database manually if it doesn't exist (Postgres usually requires this outside of the connection)
+-- In docker-entrypoint-initdb.d, the DB in POSTGRES_DB is created automatically.
+-- We connect to that DB.
 
 -- Tabela de Leads (Clientes)
 CREATE TABLE IF NOT EXISTS leads (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     telefone VARCHAR(20) NOT NULL,
     tempo_trabalho VARCHAR(50) NULL,
@@ -18,13 +19,18 @@ CREATE TABLE IF NOT EXISTS leads (
     cidade VARCHAR(100) NULL,
     uf CHAR(2) NULL,
     app_fgts VARCHAR(3) NULL,
-    atendido TINYINT(1) DEFAULT 0,
+    atendido BOOLEAN DEFAULT FALSE,
+    utm_source VARCHAR(100) DEFAULT NULL,
+    utm_medium VARCHAR(100) DEFAULT NULL,
+    utm_campaign VARCHAR(100) DEFAULT NULL,
+    referrer VARCHAR(100) DEFAULT NULL,
+    referrer_url VARCHAR(500) DEFAULT NULL,
     data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de Administradores
 CREATE TABLE IF NOT EXISTS admins (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );

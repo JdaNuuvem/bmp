@@ -16,12 +16,13 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    image: postgres:15-alpine
     environment:
-      - MYSQL_DATABASE=banco_white
-      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_DB=banco_white
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
       # Optional: Import initial database dump if exists
       # - ./database.sql:/docker-entrypoint-initdb.d/database.sql
 
