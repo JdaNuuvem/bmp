@@ -101,3 +101,29 @@ Você pode gerar um novo hash de senha usando `password_hash('sua_nova_senha', P
 ---
 
 Aproveite seu novo sistema de cadastro de leads!
+
+## 🐳 Implantação no Coolify (Docker)
+
+Para implantar este projeto no Coolify ou qualquer ambiente Docker:
+
+1.  **Repositório:** Conecte o repositório GitHub.
+2.  **Build Pack:** O Coolify detectará o `docker-compose.yml`.
+3.  **Variáveis de Ambiente (Environment Variables):**
+    
+    O arquivo `docker-compose.yml` já define valores padrão para facilitar o teste. Se você não mudar nada no Coolify, o sistema usará:
+
+    *   `DB_HOST`: `db`
+    *   `DB_DATABASE`: `banco_white`
+    *   `DB_USER`: `root`
+    *   `DB_PASSWORD`: `root`
+
+    **Para Produção (Recomendado):**
+    No painel do Coolify, você pode (e deve) sobrescrever essas variáveis com senhas mais fortes. Se você criar um banco Postgres separado no Coolify, use as credenciais fornecidas por ele.
+
+    | Variável      | Descrição                                      |
+    | :--- | :--- |
+    | `DB_HOST`     | Endereço do banco (nome do serviço ou IP).     |
+    | `DB_DATABASE` | Nome do banco de dados.                        |
+    | `DB_USER`     | Usuário do banco.                              |
+    | `DB_PASSWORD` | Senha do banco.                                |
+
