@@ -16,7 +16,7 @@ $sim_count = 0;
 
 // Paginação
 $limit = 30;
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1)
     $page = 1;
 $offset = ($page - 1) * $limit;
@@ -30,8 +30,8 @@ if ($pdo) {
         $total_pages = ceil($total_leads / $limit);
 
         // 2. Contagem de Leads de Hoje
-        // Usando CURDATE() do MySQL
-        $stmtToday = $pdo->query("SELECT COUNT(*) FROM leads WHERE DATE(data_registro) = CURDATE()");
+        // PostgreSQL usa CURRENT_DATE
+        $stmtToday = $pdo->query("SELECT COUNT(*) FROM leads WHERE DATE(data_registro) = CURRENT_DATE");
         $today_leads = $stmtToday->fetchColumn();
 
         // 3. Contagem para Conversão (FGTS Sim)
@@ -45,7 +45,8 @@ if ($pdo) {
         $stmt->execute();
         $leads = $stmt->fetchAll();
 
-    } catch (PDOException $e) {
+    }
+    catch (PDOException $e) {
         $error = "Erro ao buscar dados.";
     }
 }
@@ -111,14 +112,15 @@ if ($pdo) {
                 <span class="stat-number"><?php echo number_format($today_leads, 0, ',', '.'); ?></span>
                 <?php if ($today_leads > 0): ?>
                     <span class="stat-badge success">+ Novos registros</span>
-                <?php endif; ?>
+                <?php
+endif; ?>
             </div>
             <div class="stat-card highlight-card">
                 <span class="stat-title highlight-text">Conversão (FGTS Sim)</span>
                 <span class="stat-number highlight-text">
                     <?php
-                    echo $total_leads > 0 ? round(($sim_count / $total_leads) * 100) . '%' : '0%';
-                    ?>
+echo $total_leads > 0 ? round(($sim_count / $total_leads) * 100) . '%' : '0%';
+?>
                 </span>
             </div>
         </div>
@@ -149,13 +151,14 @@ if ($pdo) {
                                 Nenhum lead registrado até o momento.
                             </td>
                         </tr>
-                    <?php else: ?>
+                    <?php
+else: ?>
                         <?php foreach ($leads as $lead): ?>
                             <tr>
                                 <td style="text-align: center;">
-                                    <button class="btn-check <?php echo ($lead['atendido'] ?? 0) == 1 ? 'active' : ''; ?>"
+                                    <button class="btn-check <?php echo($lead['atendido'] ?? 0) == 1 ? 'active' : ''; ?>"
                                         onclick="toggleAtendido(<?php echo $lead['id']; ?>, this)"
-                                        title="<?php echo ($lead['atendido'] ?? 0) == 1 ? 'Marcar como Pendente' : 'Marcar como Atendido'; ?>">
+                                        title="<?php echo($lead['atendido'] ?? 0) == 1 ? 'Marcar como Pendente' : 'Marcar como Atendido'; ?>">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
                                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -171,9 +174,9 @@ if ($pdo) {
                                 <td style="font-weight: 600; color: #fff;"><?php echo htmlspecialchars($lead['nome']); ?></td>
                                 <td style="font-family: monospace; letter-spacing: 0.5px;">
                                     <?php
-                                    $clean_phone = preg_replace('/\D/', '', $lead['telefone']);
-                                    $wa_url = "https://wa.me/+55" . $clean_phone;
-                                    ?>
+        $clean_phone = preg_replace('/\D/', '', $lead['telefone']);
+        $wa_url = "https://wa.me/+55" . $clean_phone;
+?>
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <a href="<?php echo $wa_url; ?>" target="_blank" title="Chamar no WhatsApp"
                                             style="text-decoration: none; display: flex; align-items: center; justify-content: center; background-color: rgba(37, 211, 102, 0.15); width: 28px; height: 28px; border-radius: 50%; transition: all 0.2s;">
@@ -193,65 +196,71 @@ if ($pdo) {
                                 </td>
                                 <td>
                                     <?php
-                                    if (!empty($lead['data_nascimento'])) {
-                                        echo date('d/m/Y', strtotime($lead['data_nascimento']));
-                                    } else {
-                                        echo '-';
-                                    }
-                                    ?>
+        if (!empty($lead['data_nascimento'])) {
+            echo date('d/m/Y', strtotime($lead['data_nascimento']));
+        }
+        else {
+            echo '-';
+        }
+?>
                                 </td>
                                 <td style="font-family: monospace; letter-spacing: 0.5px;">
                                     <?php
-                                    $cep = $lead['cep'] ?? '';
-                                    if (!empty($cep) && strlen($cep) == 8) {
-                                        echo substr($cep, 0, 5) . '-' . substr($cep, 5);
-                                    } else {
-                                        echo htmlspecialchars($cep) ?: '-';
-                                    }
-                                    ?>
+        $cep = $lead['cep'] ?? '';
+        if (!empty($cep) && strlen($cep) == 8) {
+            echo substr($cep, 0, 5) . '-' . substr($cep, 5);
+        }
+        else {
+            echo htmlspecialchars($cep) ?: '-';
+        }
+?>
                                 </td>
                                 <td>
                                     <?php
-                                    $isSim = strtolower($lead['app_fgts'] ?? '') === 'sim';
-                                    echo '<span class="badge ' . ($isSim ? 'badge-sim' : 'badge-nao') . '">' .
-                                        ($isSim ? 'SIM' : 'NÃO') . '</span>';
-                                    ?>
+        $isSim = strtolower($lead['app_fgts'] ?? '') === 'sim';
+        echo '<span class="badge ' . ($isSim ? 'badge-sim' : 'badge-nao') . '">' .
+            ($isSim ? 'SIM' : 'NÃO') . '</span>';
+?>
                                 </td>
                                 <td style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
                                     <?php
-                                    if (empty($lead['tempo_trabalho'])) {
-                                        echo '-';
-                                    } else {
-                                        $tempo = str_replace(['_'], ' ', $lead['tempo_trabalho']);
-                                        echo ucwords($tempo);
-                                    }
-                                    ?>
+        if (empty($lead['tempo_trabalho'])) {
+            echo '-';
+        }
+        else {
+            $tempo = str_replace(['_'], ' ', $lead['tempo_trabalho']);
+            echo ucwords($tempo);
+        }
+?>
                                 </td>
                                 <td style="font-size: 0.85rem;">
                                     <?php
-                                    $origem = $lead['utm_source'] ?? '';
-                                    if (!empty($origem)) {
-                                        $origemColors = [
-                                            'facebook' => '#1877f2',
-                                            'instagram' => '#e4405f',
-                                            'kwai' => '#ff6b35',
-                                            'tiktok' => '#000000',
-                                            'google' => '#4285f4',
-                                            'whatsapp' => '#25d366',
-                                        ];
-                                        $color = $origemColors[strtolower($origem)] ?? '#FDB931';
-                                        echo '<span style="background: ' . $color . '22; color: ' . $color . '; padding: 4px 10px; border-radius: 12px; font-weight: 600; text-transform: capitalize; border: 1px solid ' . $color . '44;">' . htmlspecialchars($origem) . '</span>';
-                                    } else {
-                                        echo '<span style="color: rgba(255,255,255,0.3);">-</span>';
-                                    }
-                                    ?>
+        $origem = $lead['utm_source'] ?? '';
+        if (!empty($origem)) {
+            $origemColors = [
+                'facebook' => '#1877f2',
+                'instagram' => '#e4405f',
+                'kwai' => '#ff6b35',
+                'tiktok' => '#000000',
+                'google' => '#4285f4',
+                'whatsapp' => '#25d366',
+            ];
+            $color = $origemColors[strtolower($origem)] ?? '#FDB931';
+            echo '<span style="background: ' . $color . '22; color: ' . $color . '; padding: 4px 10px; border-radius: 12px; font-weight: 600; text-transform: capitalize; border: 1px solid ' . $color . '44;">' . htmlspecialchars($origem) . '</span>';
+        }
+        else {
+            echo '<span style="color: rgba(255,255,255,0.3);">-</span>';
+        }
+?>
                                 </td>
                                 <td style="font-size: 0.85rem; font-weight: 600; color: #4ade80;">
                                     <?php echo htmlspecialchars($lead['referrer'] ?? '') ?: '<span style="color: rgba(255,255,255,0.3);">-</span>'; ?>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        <?php
+    endforeach; ?>
+                    <?php
+endif; ?>
                 </tbody>
             </table>
         </div>
@@ -266,14 +275,17 @@ if ($pdo) {
                 <div class="pagination-controls">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="btn-page prev">&laquo; Anterior</a>
-                    <?php endif; ?>
+                    <?php
+    endif; ?>
 
                     <?php if ($page < $total_pages): ?>
                         <a href="?page=<?php echo $page + 1; ?>" class="btn-page next">Próxima &raquo;</a>
-                    <?php endif; ?>
+                    <?php
+    endif; ?>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php
+endif; ?>
     </div>
     <script>
         function toggleAtendido(id, btn) {
