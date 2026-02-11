@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variáveis de estado
     let currentStep = 1;
     let addToCartTracked = false; // Flag para evitar duplicação
+    let isNavigating = false; // Lock de navegação para prevenir duplo clique
     // Passo 5 é o último de input. O 7 é a tela de sucesso.
     // O formulário é enviado no Passo 5.
 
@@ -175,8 +176,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- NAVEGAÇÃO E ANIMAÇÃO ---
     window.nextStep = function (stepNumber) {
+        // Previne múltiplas execuções simultâneas (duplo clique)
+        if (isNavigating) {
+            console.log('⚠️ Navegação em andamento, ignorando...');
+            return;
+        }
+        isNavigating = true;
+
         // Se estiver avançando (e não voltando), valida o passo atual
-        if (stepNumber > currentStep && !validateStep(currentStep)) return;
+        if (stepNumber > currentStep && !validateStep(currentStep)) {
+            isNavigating = false;
+            return;
+        }
 
         // Salva os dados da etapa atual no banco
         if (stepNumber > currentStep) {
@@ -222,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 currentStep = stepNumber;
                 if (nextEl) nextEl.classList.add('active');
+                isNavigating = false; // Libera lock
             }, 500);
             return;
         }
@@ -239,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const firstInput = nextEl.querySelector('input, select');
                     if (firstInput) firstInput.focus();
                 }
+                isNavigating = false; // Libera lock
             }, 400); // Sincronizado com CSS transition
         }
     };
