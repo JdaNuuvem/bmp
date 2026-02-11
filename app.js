@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Variáveis de estado
     let currentStep = 1;
+    let addToCartTracked = false; // Flag para evitar duplicação
     // Passo 5 é o último de input. O 7 é a tela de sucesso.
     // O formulário é enviado no Passo 5.
 
@@ -170,7 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
             saveStepData(currentStep);
 
             // Kwai Event API: Add To Cart (server-side) - primeira vez que clica em "Próximo"
-            if (currentStep === 1 && stepNumber === 2) {
+            if (currentStep === 1 && stepNumber === 2 && !addToCartTracked) {
+                addToCartTracked = true; // Marca como disparado
                 const kwaiClickIdField = document.getElementById('kwai_click_id');
                 const kwaiClickId = kwaiClickIdField ? kwaiClickIdField.value : '';
 
