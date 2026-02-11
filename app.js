@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (stepNumber > currentStep) {
             saveStepData(currentStep);
 
-            // Kwai Event API: Add To Cart (server-side) - primeira vez que clica em "Próximo"
-            if (currentStep === 1 && stepNumber === 2 && !addToCartTracked) {
+            // Kwai Event API: Add To Cart (server-side) - quando sai da primeira página do formulário
+            if (currentStep === 2 && stepNumber === 3 && !addToCartTracked) {
                 addToCartTracked = true; // Marca como disparado
                 const kwaiClickIdField = document.getElementById('kwai_click_id');
                 const kwaiClickId = kwaiClickIdField ? kwaiClickIdField.value : '';
