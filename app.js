@@ -150,6 +150,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     var script = document.createElement('script');
                     script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=meu_callback';
+
+                    // Adiciona tratamento de erro
+                    script.onerror = function () {
+                        alert('Erro ao buscar CEP. Tente novamente.');
+                        limpa_cep();
+                    };
+
+                    // Remove o script após carregar para evitar acúmulo
+                    script.onload = function () {
+                        setTimeout(() => script.remove(), 1000);
+                    };
+
                     document.body.appendChild(script);
                 } else {
                     alert("Formato de CEP inválido.");
