@@ -54,23 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $finalLeadId = $pdo->lastInsertId();
         }
 
-        // Kwai Event API - Server Side Tracking
-        require_once 'kwai_event_api.php';
+        // Kwai Event API - Server Side Tracking (não bloqueia se falhar)
+        try {
+            require_once 'kwai_event_api.php';
 
-        $kwaiPixelId = '302738569752313'; // Pixel ID do Kwai
-        $kwaiAccessToken = '71zvD-ky-0qZ3SDwzGyrbvXZuxNGvp0TmPpCxmrvNVQ'; // Access Token
-        $clickId = $_POST['kwai_click_id'] ?? ''; // Click ID capturado do URL
+            $kwaiPixelId = '302738569752313';
+            $kwaiAccessToken = '71zvD-ky-0qZ3SDwzGyrbvXZuxNGvp0TmPpCxmrvNVQ';
+            $clickId = $_POST['kwai_click_id'] ?? '';
 
-        $kwaiAPI = new KwaiEventAPI($kwaiPixelId, $kwaiAccessToken);
-        $kwaiAPI->trackCompleteRegistration($finalLeadId, $clickId);
-        $kwaiAPI->trackPurchase($finalLeadId, 0, $clickId);
+            $kwaiAPI = new KwaiEventAPI($kwaiPixelId, $kwaiAccessToken);
+            $kwaiAPI->trackCompleteRegistration($finalLeadId, $clickId);
+            $kwaiAPI->trackPurchase($finalLeadId, 0, $clickId);
+        }
+        catch (Exception $kwaiError) {
+            // Log error mas não falha o cadastro
+            error_log("Kwai Event API Error: " . $kwaiError->getMessage());
+        }
 
         echo json_encode(['success' => true, 'message' => 'Cadastro realizado com sucesso!']);
     }
     catch (PDOException $e) {
-        // Log do erro real no servidor (opcional)
-        // error_log($e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Erro ao salvar os dados.']);
+        // Log do erro real no servidor
+        error_log("Database Error: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Erro ao salvar os dados.', 'debug' => $e->getMessage()]);
     }
 }
 else {
