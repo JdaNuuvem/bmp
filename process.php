@@ -62,11 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $clickId = $_POST['kwai_click_id'] ?? ''; // Click ID capturado do URL
 
         $kwaiAPI = new KwaiEventAPI($kwaiPixelId, $kwaiAccessToken);
-        $kwaiAPI->sendEvent('EVENT_FORM_SUBMIT', [
-            'content_id' => $finalLeadId,
-            'content_type' => 'lead_form',
-            'content_name' => 'Formulário de Cadastro Submetido'
-        ], $clickId);
         $kwaiAPI->trackCompleteRegistration($finalLeadId, $clickId);
         $kwaiAPI->trackPurchase($finalLeadId, 0, $clickId);
 
