@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Kwai Event API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        h1 {
+            color: #FDB931;
+        }
+
+        .event-card {
+            background: #2a2a2a;
+            border: 1px solid #FDB931;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .event-card h3 {
+            color: #FDB931;
+            margin-top: 0;
+        }
+
+        button {
+            background: #FDB931;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #ffc952;
+        }
+
+        .click-id-info {
+            background: #3a3a3a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .click-id-info code {
+            background: #000;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: #4ade80;
+        }
+
+        .response {
+            margin-top: 10px;
+            padding: 10px;
+            background: #000;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Teste Kwai Event API</h1>
+
+    <div class="click-id-info">
+        <strong>Click ID de Teste (Kwai):</strong>
+        <code id="test-click-id">BWo6tuVrd4nQOtMFe0Vq6w</code>
+        <p style="font-size: 12px; color: #aaa; margin: 10px 0 0 0;">
+            ⚠️ Este é o Click ID fornecido pelo Kwai para testes. Se você atualizar a página do painel do Kwai,
+            ele vai mudar e você precisa copiar o novo valor.
+        </p>
+    </div>
+
+    <div class="event-card">
+        <h3>1️⃣ EVENT_CONTENT_VIEW</h3>
+        <p>Testa o evento de visualização de conteúdo (quando a página carrega)</p>
+        <button onclick="testEvent('EVENT_CONTENT_VIEW', 'content_view_test')">Testar Content View</button>
+        <div id="response-content-view" class="response"></div>
+    </div>
+
+    <div class="event-card">
+        <h3>2️⃣ EVENT_ADD_TO_CART</h3>
+        <p>Testa o evento quando o usuário clica em "Próximo" pela primeira vez</p>
+        <button onclick="testEvent('EVENT_ADD_TO_CART', 'add_to_cart_test')">Testar Add To Cart</button>
+        <div id="response-add-to-cart" class="response"></div>
+    </div>
+
+    <div class="event-card">
+        <h3>3️⃣ EVENT_FORM_SUBMIT</h3>
+        <p>Testa o evento quando o formulário é enviado</p>
+        <button onclick="testEvent('EVENT_FORM_SUBMIT', 'form_submit_test')">Testar Form Submit</button>
+        <div id="response-form-submit" class="response"></div>
+    </div>
+
+    <div class="event-card">
+        <h3>4️⃣ EVENT_COMPLETE_REGISTRATION</h3>
+        <p>Testa o evento de cadastro completo</p>
+        <button onclick="testEvent('EVENT_COMPLETE_REGISTRATION', 'registration_test')">Testar Complete
+            Registration</button>
+        <div id="response-registration" class="response"></div>
+    </div>
+
+    <div class="event-card">
+        <h3>5️⃣ EVENT_PURCHASE</h3>
+        <p>Testa o evento de conversão (purchase)</p>
+        <button onclick="testEvent('EVENT_PURCHASE', 'purchase_test')">Testar Purchase</button>
+        <div id="response-purchase" class="response"></div>
+    </div>
+
+    <script>
+        function testEvent(eventName, contentId) {
+            const clickId = document.getElementById('test-click-id').textContent;
+            const responseId = `response-${eventName.toLowerCase().replace(/_/g, '-')}`;
+            const responseDiv = document.getElementById(responseId);
+
+            responseDiv.innerHTML = '<span style="color: #fbbf24;">Enviando...</span>';
+
+            fetch('test_kwai_event.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    event_name: eventName,
+                    click_id: clickId,
+                    content_id: contentId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        responseDiv.innerHTML = `<span class="success">✅ Sucesso!</span>\n${JSON.stringify(data, null, 2)}`;
+                    } else {
+                        responseDiv.innerHTML = `<span class="error">❌ Erro:</span>\n${JSON.stringify(data, null, 2)}`;
+                    }
+                })
+                .catch(error => {
+                    responseDiv.innerHTML = `<span class="error">❌ Erro de rede:</span>\n${error.message}`;
+                });
+        }
+    </script>
+</body>
+
+</html>
