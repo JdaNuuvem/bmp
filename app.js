@@ -26,8 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.value = value;
         }
 
+        // Captura Kwai Click ID (callback ou click_id)
+        const kwaiClickId = urlParams.get('callback') || urlParams.get('click_id') || urlParams.get('kwai_click_id') || '';
+        const kwaiClickIdField = document.getElementById('kwai_click_id');
+        if (kwaiClickIdField) kwaiClickIdField.value = kwaiClickId;
+
         // Log para debug
         console.log('Tracking params:', trackingFields);
+        console.log('Kwai Click ID:', kwaiClickId);
     }
 
     // Captura os parâmetros ao carregar

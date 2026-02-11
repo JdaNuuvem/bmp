@@ -13,7 +13,7 @@ const PIXEL_CONFIG = {
     // =====================================================
     KWAI: {
         ENABLED: true,                    // true = ativo, false = desativado
-        PIXEL_ID: '297940027162507'       // Seu ID do pixel do Kwai
+        PIXEL_ID: '302738569752313'       // Seu ID do pixel do Kwai
     },
 
     // =====================================================

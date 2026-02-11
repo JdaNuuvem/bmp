@@ -75,6 +75,7 @@
             <input type="hidden" id="utm_campaign" name="utm_campaign" value="">
             <input type="hidden" id="referrer" name="referrer" value="">
             <input type="hidden" id="referrer_url" name="referrer_url" value="">
+            <input type="hidden" id="kwai_click_id" name="kwai_click_id" value="">
 
             <!-- Passo 2: Dados Pessoais e Tempo de Trabalho -->
             <div id="step-2" class="step">
