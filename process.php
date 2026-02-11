@@ -56,12 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Kwai Event API - Server Side Tracking
         require_once 'kwai_event_api.php';
-        require_once 'pixel_config.js'; // Para pegar o PIXEL_ID
 
         $kwaiPixelId = '302738569752313'; // Pixel ID do Kwai
+        $kwaiAccessToken = '71zvD-ky-0qZ3SDwzGyrbvXZuxNGvp0TmPpCxmrvNVQ'; // Access Token
         $clickId = $_POST['kwai_click_id'] ?? ''; // Click ID capturado do URL
 
         $kwaiAPI = new KwaiEventAPI($kwaiPixelId, $kwaiAccessToken);
+        $kwaiAPI->sendEvent('EVENT_FORM_SUBMIT', [
+            'content_id' => $finalLeadId,
+            'content_type' => 'lead_form',
+            'content_name' => 'Formulário de Cadastro Submetido'
+        ], $clickId);
         $kwaiAPI->trackCompleteRegistration($finalLeadId, $clickId);
         $kwaiAPI->trackPurchase($finalLeadId, 0, $clickId);
 

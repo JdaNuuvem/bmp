@@ -39,6 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Captura os parâmetros ao carregar
     captureTrackingParams();
 
+    // Kwai Event API - Track Content View (server-side)
+    const kwaiClickId = new URLSearchParams(window.location.search).get('callback') ||
+        new URLSearchParams(window.location.search).get('click_id') ||
+        new URLSearchParams(window.location.search).get('kwai_click_id') || '';
+
+    fetch(`track_content_view.php?kwai_click_id=${encodeURIComponent(kwaiClickId)}`)
+        .then(response => response.json())
+        .then(data => console.log('Content View tracked:', data))
+        .catch(error => console.error('Content View tracking error:', error));
+
     // --- FUNÇÕES DE MÁSCARA ---
     function formatPhone(input) {
         let value = input.value.replace(/\D/g, '');
