@@ -169,17 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (stepNumber > currentStep) {
             saveStepData(currentStep);
 
-            // Pixels: quando passar da Step 2 (Dados Iniciais) para a Step 3
+            // Kwai Event API: Add To Cart (server-side) - primeira vez que clica em "Próximo"
+            if (currentStep === 1 && stepNumber === 2) {
+                const kwaiClickIdField = document.getElementById('kwai_click_id');
+                const kwaiClickId = kwaiClickIdField ? kwaiClickIdField.value : '';
+
+                fetch('track_add_to_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `kwai_click_id=${encodeURIComponent(kwaiClickId)}`
+                })
+                    .then(response => response.json())
+                    .then(data => console.log('Add To Cart tracked:', data))
+                    .catch(error => console.error('Add To Cart tracking error:', error));
+            }
+
+            // Facebook Pixel: Lead (quando passar da Step 2 para Step 3)
             if (currentStep === 2 && stepNumber === 3) {
-                // Kwai Pixel: AddToCart
-                if (typeof PIXEL_CONFIG !== 'undefined' && PIXEL_CONFIG.KWAI.ENABLED && typeof kwaiq !== 'undefined') {
-                    try {
-                        kwaiq.instance(PIXEL_CONFIG.KWAI.PIXEL_ID).track('addToCart');
-                    } catch (e) {
-                        console.error('Kwai Pixel Error:', e);
-                    }
-                }
-                // Facebook Pixel: Lead
                 if (typeof PIXEL_CONFIG !== 'undefined' && PIXEL_CONFIG.FACEBOOK.ENABLED && typeof fbq !== 'undefined') {
                     try {
                         fbq('track', 'Lead');
