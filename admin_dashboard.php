@@ -76,7 +76,7 @@ if ($pdo) {
             </div>
 
             <div class="header-controls">
-                <a href="#" class="btn-export" onclick="alert('Funcionalidade de exportação em breve!'); return false;">
+                <a href="export_csv.php" class="btn-export" target="_blank">
                     <span>&#128196;</span> Exportar CSV
                 </a>
                 <a href="logout.php" class="btn-logout">Sair</a>
@@ -155,7 +155,7 @@ echo $total_leads > 0 ? round(($sim_count / $total_leads) * 100) . '%' : '0%';
 else: ?>
                         <?php foreach ($leads as $lead): ?>
                             <tr>
-                                <td style="text-align: center;">
+                                <td style="text-align: center;" data-label="Status">
                                     <button class="btn-check <?php echo($lead['atendido'] ?? 0) == 1 ? 'active' : ''; ?>"
                                         onclick="toggleAtendido(<?php echo $lead['id']; ?>, this)"
                                         title="<?php echo($lead['atendido'] ?? 0) == 1 ? 'Marcar como Pendente' : 'Marcar como Atendido'; ?>">
@@ -165,14 +165,14 @@ else: ?>
                                         </svg>
                                     </button>
                                 </td>
-                                <td style="color: rgba(255,255,255,0.7); font-size: 0.85rem;">
+                                <td style="color: rgba(255,255,255,0.7); font-size: 0.85rem;" data-label="Data/Hora">
                                     <?php echo date('d/m/Y', strtotime($lead['data_registro'])); ?>
                                     <span style="font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-left: 5px;">
                                         <?php echo date('H:i', strtotime($lead['data_registro'])); ?>
                                     </span>
                                 </td>
-                                <td style="font-weight: 600; color: #fff;"><?php echo htmlspecialchars($lead['nome']); ?></td>
-                                <td style="font-family: monospace; letter-spacing: 0.5px;">
+                                <td style="font-weight: 600; color: #fff;" data-label="Nome"><?php echo htmlspecialchars($lead['nome']); ?></td>
+                                <td style="font-family: monospace; letter-spacing: 0.5px;" data-label="Telefone">
                                     <?php
         $clean_phone = preg_replace('/\D/', '', $lead['telefone']);
         $wa_url = "https://wa.me/+55" . $clean_phone;
@@ -188,13 +188,13 @@ else: ?>
                                         <?php echo htmlspecialchars($lead['telefone'] ?? ''); ?>
                                     </div>
                                 </td>
-                                <td style="font-family: monospace; letter-spacing: 0.5px;">
+                                <td style="font-family: monospace; letter-spacing: 0.5px;" data-label="CPF">
                                     <?php echo htmlspecialchars($lead['cpf'] ?? ''); ?>
                                 </td>
-                                <td style="font-family: monospace; letter-spacing: 0.5px;">
+                                <td style="font-family: monospace; letter-spacing: 0.5px;" data-label="RG">
                                     <?php echo htmlspecialchars($lead['rg'] ?? ''); ?>
                                 </td>
-                                <td>
+                                <td data-label="Nascimento">
                                     <?php
         if (!empty($lead['data_nascimento'])) {
             echo date('d/m/Y', strtotime($lead['data_nascimento']));
@@ -204,7 +204,7 @@ else: ?>
         }
 ?>
                                 </td>
-                                <td style="font-family: monospace; letter-spacing: 0.5px;">
+                                <td style="font-family: monospace; letter-spacing: 0.5px;" data-label="CEP">
                                     <?php
         $cep = $lead['cep'] ?? '';
         if (!empty($cep) && strlen($cep) == 8) {
@@ -215,14 +215,14 @@ else: ?>
         }
 ?>
                                 </td>
-                                <td>
+                                <td data-label="FGTS App">
                                     <?php
         $isSim = strtolower($lead['app_fgts'] ?? '') === 'sim';
         echo '<span class="badge ' . ($isSim ? 'badge-sim' : 'badge-nao') . '">' .
             ($isSim ? 'SIM' : 'NÃO') . '</span>';
 ?>
                                 </td>
-                                <td style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+                                <td style="font-size: 0.85rem; color: rgba(255,255,255,0.7);" data-label="Tempo Trabalho">
                                     <?php
         if (empty($lead['tempo_trabalho'])) {
             echo '-';
@@ -233,7 +233,7 @@ else: ?>
         }
 ?>
                                 </td>
-                                <td style="font-size: 0.85rem;">
+                                <td style="font-size: 0.85rem;" data-label="Origem">
                                     <?php
         $origem = $lead['utm_source'] ?? '';
         if (!empty($origem)) {
@@ -253,7 +253,7 @@ else: ?>
         }
 ?>
                                 </td>
-                                <td style="font-size: 0.85rem; font-weight: 600; color: #4ade80;">
+                                <td style="font-size: 0.85rem; font-weight: 600; color: #4ade80;" data-label="Ref">
                                     <?php echo htmlspecialchars($lead['referrer'] ?? '') ?: '<span style="color: rgba(255,255,255,0.3);">-</span>'; ?>
                                 </td>
                             </tr>
