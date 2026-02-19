@@ -14,8 +14,8 @@ $eventName = $data['event_name'] ?? 'EVENT_CONTENT_VIEW';
 $clickId = $data['click_id'] ?? 'BWo6tuVrd4nQOtMFe0Vq6w'; // Click ID de teste padrão
 $contentId = $data['content_id'] ?? 'test_' . time();
 
-$kwaiPixelId = '302738569752313';
-$kwaiAccessToken = '71zvD-ky-0qZ3SDwzGyrbvXZuxNGvp0TmPpCxmrvNVQ';
+$kwaiPixelId = '303516605845317';
+$kwaiAccessToken = 'aAk6Uj-vhxpVSWwU8wxtY1B2Ud-ntDuFSjj6rdg9pT8';
 
 try {
     $kwaiAPI = new KwaiEventAPI($kwaiPixelId, $kwaiAccessToken);
@@ -41,8 +41,7 @@ try {
     ], JSON_PRETTY_PRINT);
 
 
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
         'success' => false,
