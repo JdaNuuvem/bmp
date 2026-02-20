@@ -59,7 +59,7 @@
 
         <!-- Passo 1: Botão de Start (dentro do container para centralizar junto inicialmente) -->
         <div id="step-1" class="step active" style="margin-top: 20px;">
-            <p style="color: #e0e0e0; margin-bottom: 15px;">Bem-vindo ao nosso portal.</p>
+            <p style="color: #e0e0e0; margin-bottom: 15px; font-weight: bold;">ANÁLISE DE FUNDO DE GARANTIA FGTS</p>
             <button type="button" class="btn" onclick="nextStep(2)">COMEÇAR</button>
         </div>
     </div>
@@ -205,6 +205,11 @@
             </div>
 
         </form>
+    </div>
+
+    <div style="text-align: center; font-size: 12px; color: #888; margin: 20px 0; padding-bottom: 20px;">
+        NR: 1313260205150801<br>
+        NOME: gabriel de santa rosa silva
     </div>
 
     <script src="app.js?v=2"></script>
