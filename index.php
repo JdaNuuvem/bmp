@@ -209,7 +209,35 @@
 
     <div style="text-align: center; font-size: 12px; color: #888; margin: 20px 0; padding-bottom: 20px;">
         NR: 1313260205150801<br>
-        NOME: gabriel de santa rosa silva
+        NOME: gabriel de santa rosa silva<br><br>
+        <button type="button" id="btn-disclaimer"
+            style="background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 12px;">Informações
+            Legais</button>
+    </div>
+
+    <!-- Modal Disclaimer -->
+    <div id="disclaimer-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div
+            style="background: var(--dark-bg); padding: 25px; border-radius: 15px; max-width: 90%; width: 450px; border: 1px solid var(--glass-border); color: var(--text-color); box-shadow: 0 10px 30px rgba(0,0,0,0.7);">
+            <h3
+                style="margin-top: 0; margin-bottom: 15px; text-align: center; color: #FDB931; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">
+                Informações Legais</h3>
+            <p style="font-size: 12px; line-height: 1.6; text-align: justify; color: #cbd5e1; margin-bottom: 0;">
+                Sorteios lastreados por Títulos de Capitalização, da Modalidade Incentivo, emitidos pela VIA
+                Capitalização S.A, inscrita no CNPJ sob nº 88.076.302/0001-94, e aprovados pela SUSEP através do
+                registro na SUSEP Sorteio n° 15414.652257/2023-51, bem como devidamente registrados e autorizados pela
+                Lotep, em conformidade com a legislação aplicável. O valor das premiações aqui indicados são líquidos,
+                já descontado o devido imposto de renda de 25%. O registro deste plano na SUSEP não implica, por parte
+                da Autarquia, incentivo ou recomendação à sua comercialização. Esta ação promocional é de inteira
+                responsabilidade da empresa promotora e não possui qualquer vínculo, patrocínio ou endosso do aplicativo
+                Kwai ou da Kuaishou Technology.
+            </p>
+            <div style="text-align: center; margin-top: 25px;">
+                <button type="button" id="btn-close-disclaimer" class="btn"
+                    style="margin-top: 0; padding: 12px 30px; font-size: 14px;">FECHAR</button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js?v=2"></script>

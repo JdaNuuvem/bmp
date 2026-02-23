@@ -451,4 +451,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
+
+    // --- MODAL DISCLAIMER ---
+    const btnDisclaimer = document.getElementById('btn-disclaimer');
+    const modalDisclaimer = document.getElementById('disclaimer-modal');
+    const btnCloseDisclaimer = document.getElementById('btn-close-disclaimer');
+
+    if (btnDisclaimer && modalDisclaimer && btnCloseDisclaimer) {
+        btnDisclaimer.addEventListener('click', () => {
+            modalDisclaimer.style.display = 'flex';
+        });
+
+        btnCloseDisclaimer.addEventListener('click', () => {
+            modalDisclaimer.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modalDisclaimer) {
+                modalDisclaimer.style.display = 'none';
+            }
+        });
+    }
 });
